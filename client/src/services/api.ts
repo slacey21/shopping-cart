@@ -63,20 +63,20 @@ export const updateProduct = async (product: Product): Promise<Product> => {
   }
 }
 
-export const deleteProduct = async (productId: string): Promise<number> => {
+export const deleteProduct = async (productId: string): Promise<boolean> => {
   try {
     const response = await axios.delete(`/api/products/${productId}`);
-    return response.status;
+    return response.status === 200;
   } catch(e) {
     console.log(e);
     throw e;
   }
 }
 
-export const checkout = async (): Promise<number> => {
+export const checkout = async (): Promise<boolean> => {
   try {
     const response = await axios.post(`/api/checkout`);
-    return response.status;
+    return response.status === 200;
   } catch(e) {
     console.log(e);
     throw e;

@@ -30,11 +30,11 @@ function Product({
   const handleDeleteProduct = () => {
     (async () => {
       try {
-        const deleteStatus = await deleteProduct(product._id);
-        if (deleteStatus - 200 > 99) {
-          throw new Error(`Error: Product could not be deleted, operation returned status ${deleteStatus}`);
-        } else {
+        const deleted = await deleteProduct(product._id);
+        if (deleted) {
           setProducts(products.filter(p => p._id !== product._id));
+        } else {
+          throw new Error("Error: Product could not be deleted, operation did not return 200 response status");
         }
       } catch(e: unknown) {
         console.log(e);

@@ -16,10 +16,10 @@ function Header({ cart, setCart }: HeaderProps) {
     (async () => {
       try {
         const checkoutComplete = await checkout();
-        if (checkoutComplete - 200 > 100) {
-          throw new Error(`Error: could not checkout, operation failed with status ${checkoutComplete}`);
-        } else {
+        if (checkoutComplete) {
           setCart([]);
+        } else {
+          throw new Error("Error: could not checkout, operation failed - status code not 200");
         }
       } catch(e: unknown) {
         console.log(e);
