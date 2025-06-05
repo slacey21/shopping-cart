@@ -86,7 +86,7 @@ export const checkout = async (): Promise<boolean> => {
 export const addToCart = async (productId: string): Promise<UpdateCartResponse> => {
   try {
     const response = await axios.post(`/api/add-to-cart`, {productId});
-    const data =  UpdateCartResponseSchema.parse(response.data);
+    const data = UpdateCartResponseSchema.parse(response.data);
     return data;
   } catch(e) {
     console.log(e);

@@ -42,7 +42,7 @@ function EditProductForm({
   return (
     <div className="edit-form">
       <h3>Edit Product</h3>
-      <form onSubmit={(e) => handleUpdateProduct(e)}>
+      <form onSubmit={(e) => handleUpdateProduct(e)} aria-label="form">
         <div className="input-group">
           <label htmlFor="product-name">Product Name</label>
           <input
