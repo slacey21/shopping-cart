@@ -1,4 +1,4 @@
-import Product from "./Product.tsx";
+import EditableProduct from "./EditableProduct.tsx";
 import type { Product as ProductType, CartItem as CartItemType } from "../types/index.ts";
 
 interface ProductListingProps {
@@ -19,7 +19,7 @@ function ProductListing({
       <h2>Products</h2>
       <ul className="product-list">
         {products.map((product: ProductType) => 
-          <Product
+          <EditableProduct
             key={product._id}
             product={product}
             products={products}
