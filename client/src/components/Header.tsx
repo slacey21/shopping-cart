@@ -12,7 +12,7 @@ function Header({ cart, setCart }: HeaderProps) {
     return total + (item.price * item.quantity);
   }, 0)
 
-   const handleCheckout = () => {
+  const handleCheckout = () => {
     (async () => {
       try {
         const checkoutComplete = await checkout();
@@ -25,6 +25,20 @@ function Header({ cart, setCart }: HeaderProps) {
         console.log(e);
       }
     })();
+  }
+
+  if (cart.length === 0){
+    return (
+      <header>
+        <h1>The Shop!</h1>
+        <div className="cart">
+          <h2>Your Cart</h2>
+          <p>Your cart is empty</p>
+          <p>Total: $0</p>
+          <button className="checkout" disabled>Checkout</button>
+        </div>
+      </header>  
+    )
   }
   
   return (
@@ -53,14 +67,8 @@ function Header({ cart, setCart }: HeaderProps) {
             </tr>
           </tfoot>
         </table>
-        <button
-          className="checkout"
-          disabled={cartTotal === 0}
-          onClick={handleCheckout}
-        >
-          Checkout
-        </button>
-    </div>
+        <button className="checkout" onClick={handleCheckout}>Checkout</button>
+      </div>
     </header>
   )
 }
