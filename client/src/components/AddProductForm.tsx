@@ -34,9 +34,10 @@ function AddProductForm({ onShowAddProduct, setProducts }: AddProductFormProps) 
     })();
   };
 
+
   return (
     <div className="add-form">
-      <form onSubmit={(e) => handleFormSubmit(e)}>
+      <form onSubmit={(e) => handleFormSubmit(e)} aria-label="form">
         <div className="input-group">
           <label htmlFor="product-name">Product Name:</label>
           <input
