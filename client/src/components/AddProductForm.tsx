@@ -3,11 +3,11 @@ import { addProduct } from "../services/api";
 import { Product } from "../types/index";
 
 interface AddProductFormProps {
-  handleShowAddProduct: () => void;
-  handleAddNewProduct: React.Dispatch<React.SetStateAction<Product[]>>;
+  onShowAddProduct: () => void;
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
-function AddProductForm({ handleShowAddProduct, handleAddNewProduct }: AddProductFormProps) {
+function AddProductForm({ onShowAddProduct, setProducts }: AddProductFormProps) {
   const defaultForm = {
     title: "",
     price: 0,
@@ -25,9 +25,9 @@ function AddProductForm({ handleShowAddProduct, handleAddNewProduct }: AddProduc
     (async () => {
       try {
         const newlyAddedProduct = await addProduct(formValues);
-        handleAddNewProduct(prev => prev.concat(newlyAddedProduct));
+        setProducts(prev => prev.concat(newlyAddedProduct));
         setFormValues(defaultForm);
-        handleShowAddProduct();
+        onShowAddProduct();
       } catch (e: unknown) {
         console.log(e);
       }
@@ -75,7 +75,7 @@ function AddProductForm({ handleShowAddProduct, handleAddNewProduct }: AddProduc
         </div>
         <div className="actions form-actions">
           <button type="submit">Add</button>
-          <button type="submit" onClick={handleShowAddProduct}>Cancel</button>
+          <button type="submit" onClick={onShowAddProduct}>Cancel</button>
         </div>
       </form>
     </div>

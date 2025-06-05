@@ -5,15 +5,15 @@ import React from "react";
 interface EditProductFormProps {
   products: Product[];
   productId: string;
-  handleToggleEditProductForm: (status: boolean) => void;
-  handleUpdateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  onToggleEditProductForm: (status: boolean) => void;
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
 function EditProductForm({
   products,
   productId,
-  handleToggleEditProductForm,
-  handleUpdateProducts
+  onToggleEditProductForm,
+  setProducts
 }: EditProductFormProps) {
   const product = products.find(product => product._id === productId) as Product;
   const [formValues, setFormValues] = React.useState<Product>(product);
@@ -30,8 +30,8 @@ function EditProductForm({
       try {
         const newValues = {...product, ...formValues};
         const newProduct = await updateProduct(newValues);
-        handleUpdateProducts(products.map(product => product._id !== productId ? product : newProduct));
-        handleToggleEditProductForm(false);
+        setProducts(products.map(product => product._id !== productId ? product : newProduct));
+        onToggleEditProductForm(false);
       } catch (e) {
         console.log(e);
       }
@@ -82,7 +82,7 @@ function EditProductForm({
 
         <div className="actions form-actions">
           <button type="submit">Update</button>
-          <button type="button" onClick={() => handleToggleEditProductForm(false)}>Cancel</button>
+          <button type="button" onClick={() => onToggleEditProductForm(false)}>Cancel</button>
         </div>
       </form>
     </div>

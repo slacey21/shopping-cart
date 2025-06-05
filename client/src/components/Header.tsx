@@ -4,10 +4,10 @@ import { type CartItem as CartItemType } from "../types";
 
 interface HeaderProps {
   cart: CartItem[];
-  handleUpdateCart: React.Dispatch<React.SetStateAction<CartItemType[]>>;
+  setCart: React.Dispatch<React.SetStateAction<CartItemType[]>>;
 }
 
-function Header({ cart, handleUpdateCart }: HeaderProps) {
+function Header({ cart, setCart }: HeaderProps) {
   const cartTotal = cart.reduce((total, item) => {
     return total + (item.price * item.quantity);
   }, 0)
@@ -19,7 +19,7 @@ function Header({ cart, handleUpdateCart }: HeaderProps) {
         if (checkoutComplete - 200 > 100) {
           throw new Error(`Error: could not checkout, operation failed with status ${checkoutComplete}`);
         } else {
-          handleUpdateCart([]);
+          setCart([]);
         }
       } catch(e: unknown) {
         console.log(e);

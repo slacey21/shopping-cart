@@ -4,15 +4,15 @@ import type { Product as ProductType, CartItem as CartItemType } from "../types/
 interface ProductListingProps {
   products: ProductType[];
   cart: CartItemType[];
-  handleUpdateProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
-  handleUpdateCart: React.Dispatch<React.SetStateAction<CartItemType[]>>;
+  setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  setCart: React.Dispatch<React.SetStateAction<CartItemType[]>>;
 }
 
 function ProductListing({
   products,
   cart,
-  handleUpdateProducts,
-  handleUpdateCart
+  setProducts,
+  setCart
 }: ProductListingProps) {
   return (
     <div className="product-listing">
@@ -24,8 +24,8 @@ function ProductListing({
             product={product}
             products={products}
             cart={cart}
-            handleUpdateProducts={handleUpdateProducts}
-            handleUpdateCart={handleUpdateCart}
+            setProducts={setProducts}
+            setCart={setCart}
           />
         )}
       </ul>

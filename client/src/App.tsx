@@ -10,7 +10,7 @@ function App() {
   const [products, setProducts] = React.useState<Product[]>([]);  
   const [cart, setCart] = React.useState<CartItem[]>([]);
   
-  const showAddProductForm = () => {
+  const handleShowAddProductForm = () => {
     setAddProductShown(!addProductShown);
   }
 
@@ -30,17 +30,17 @@ function App() {
   
   return (
     <div id="app">
-      <Header cart={cart} handleUpdateCart={setCart}/>
+      <Header cart={cart} setCart={setCart}/>
       <main>
       <ProductListing
         products={products}
         cart={cart}
-        handleUpdateProducts={setProducts}
-        handleUpdateCart={setCart}
+        setProducts={setProducts}
+        setCart={setCart}
       />
       {addProductShown
-        ? <AddProductForm handleShowAddProduct={showAddProductForm} handleAddNewProduct={setProducts}/>
-        : <button onClick={showAddProductForm}>Add a Product</button> 
+        ? <AddProductForm onShowAddProduct={handleShowAddProductForm} setProducts={setProducts}/>
+        : <button onClick={handleShowAddProductForm}>Add a Product</button> 
       }
       </main>
     </div>
