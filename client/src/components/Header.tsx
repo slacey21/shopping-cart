@@ -62,7 +62,7 @@ function Header({ cart, setCart }: HeaderProps) {
           <tfoot>
             <tr>
               <td colSpan={3} className="total">
-                {cartTotal === 0 ? "" : `$${cartTotal.toFixed(2)}`}
+                ${cartTotal.toFixed(2)}
               </td>
             </tr>
           </tfoot>
