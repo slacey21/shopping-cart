@@ -1,25 +1,22 @@
-import {
-  type Product as ProductType,
-  type CartItem as CartItemType
-} from "../types/index.ts";
+import { type Product as ProductType } from "../types/index.ts";
 import { useState } from "react";
 import EditProductForm from "./EditProductForm.tsx";
 import Product from "./Product.tsx";
+import { ProductReducerAction } from "../reducers/productsReducer.ts";
+import { CartReducerAction } from "../reducers/cartReducer.ts";
 
 interface ProductProps {
   product: ProductType;
   products: ProductType[];
-  cart: CartItemType[];
-  setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
-  setCart: React.Dispatch<React.SetStateAction<CartItemType[]>>;
+  productsDispatch: React.ActionDispatch<[action: ProductReducerAction]>;
+  cartDispatch: React.ActionDispatch<[action: CartReducerAction]>
 }
 
 function EditableProduct({
   product,
   products,
-  cart,
-  setProducts,
-  setCart
+  productsDispatch,
+  cartDispatch
 }: ProductProps) {
   const [isEditProductForm, setIsEditProductForm] = useState(false);
   
@@ -32,16 +29,15 @@ function EditableProduct({
       <Product 
         product={product}
         products={products}
-        cart={cart}
-        setProducts={setProducts}
-        setCart={setCart}
+        productsDispatch={productsDispatch}
+        cartDispatch={cartDispatch}
       />
       {isEditProductForm
       && <EditProductForm
           products={products}
           productId={product._id}
           onToggleEditProductForm={handleToggleEditProductForm}
-          setProducts={setProducts}
+          productsDispatch={productsDispatch}
         />
       }
     </>

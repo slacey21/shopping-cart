@@ -1,18 +1,19 @@
 import EditableProduct from "./EditableProduct.tsx";
-import type { Product as ProductType, CartItem as CartItemType } from "../types/index.ts";
+import React from "react";
+import type { Product as ProductType } from "../types/index.ts";
+import { ProductReducerAction } from "../reducers/productsReducer.ts";
+import { CartReducerAction } from "../reducers/cartReducer.ts";
 
 interface ProductListingProps {
   products: ProductType[];
-  cart: CartItemType[];
-  setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
-  setCart: React.Dispatch<React.SetStateAction<CartItemType[]>>;
+  productsDispatch: React.ActionDispatch<[action: ProductReducerAction]>;
+  cartDispatch: React.ActionDispatch<[action: CartReducerAction]>;
 }
 
 function ProductListing({
   products,
-  cart,
-  setProducts,
-  setCart
+  productsDispatch,
+  cartDispatch
 }: ProductListingProps) {
   return (
     <div className="product-listing">
@@ -23,9 +24,8 @@ function ProductListing({
             key={product._id}
             product={product}
             products={products}
-            cart={cart}
-            setProducts={setProducts}
-            setCart={setCart}
+            productsDispatch={productsDispatch}
+            cartDispatch={cartDispatch}
           />
         )}
       </ul>

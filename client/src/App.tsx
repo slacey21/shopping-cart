@@ -2,38 +2,40 @@ import React from 'react';
 import Header from "./components/Header.tsx";
 import ToggleableAddProductForm from "./components/ToggleableAddProductForm.tsx"
 import ProductListing from "./components/ProductListing.tsx";
-import { type Product, type CartItem } from "./types/index.ts";
 import { getProducts, getCart } from "./services/api.ts";
+import { productReducer, ProductActions } from "./reducers/productsReducer.ts";
+import { cartReducer, CartActions } from "./reducers/cartReducer.ts";
 
 function App() {
-  const [products, setProducts] = React.useState<Product[]>([]);  
-  const [cart, setCart] = React.useState<CartItem[]>([]);
+  const [products, productsDispatch] = React.useReducer(productReducer, []);
+  const [cart, cartDispatch] = React.useReducer(cartReducer, []);
 
   React.useEffect(() => {
-    (async () => {
+    const fetchProducts = async () => {
       const fetchedProducts = await getProducts();
-      setProducts(fetchedProducts);
-    })();
+      productsDispatch(ProductActions.SetProducts(fetchedProducts));
+    }
+    fetchProducts();
   }, []);
   
   React.useEffect(() => {
-    (async () => {
+    const fetchCart = async () => {
       const fetchedCart = await getCart();
-      setCart(fetchedCart);
-    })();
+      cartDispatch(CartActions.SetCart(fetchedCart));
+    }
+    fetchCart();
   }, []);
   
   return (
     <div id="app">
-      <Header cart={cart} setCart={setCart}/>
+      <Header cart={cart} cartDispatch={cartDispatch}/>
       <main>
         <ProductListing
           products={products}
-          cart={cart}
-          setProducts={setProducts}
-          setCart={setCart}
+          productsDispatch={productsDispatch}
+          cartDispatch={cartDispatch}
         />
-        <ToggleableAddProductForm setProducts={setProducts}/>
+        <ToggleableAddProductForm productsDispatch={productsDispatch}/>
       </main>
     </div>
   )

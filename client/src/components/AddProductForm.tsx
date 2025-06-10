@@ -1,13 +1,13 @@
 import React from "react";
 import { addProduct } from "../services/api";
-import { Product } from "../types/index";
+import { ProductReducerAction, ProductActions } from "../reducers/productsReducer";
 
 interface AddProductFormProps {
   onShowAddProduct: () => void;
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  productsDispatch: React.ActionDispatch<[arg: ProductReducerAction]>;
 }
 
-function AddProductForm({ onShowAddProduct, setProducts }: AddProductFormProps) {
+function AddProductForm({ onShowAddProduct, productsDispatch }: AddProductFormProps) {
   const defaultForm = {
     title: "",
     price: 0,
@@ -25,7 +25,7 @@ function AddProductForm({ onShowAddProduct, setProducts }: AddProductFormProps) 
     (async () => {
       try {
         const newlyAddedProduct = await addProduct(formValues);
-        setProducts(prev => prev.concat(newlyAddedProduct));
+        productsDispatch(ProductActions.AddProduct(newlyAddedProduct));
         setFormValues(defaultForm);
         onShowAddProduct();
       } catch (e: unknown) {

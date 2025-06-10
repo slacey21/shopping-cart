@@ -1,13 +1,13 @@
 import CartItem from "./CartItem";
 import { checkout } from "../services/api";
-import { type CartItem as CartItemType } from "../types";
+import { CartReducerAction, CartActions } from "../reducers/cartReducer";
 
 interface HeaderProps {
   cart: CartItem[];
-  setCart: React.Dispatch<React.SetStateAction<CartItemType[]>>;
+  cartDispatch: React.ActionDispatch<[action: CartReducerAction]>;
 }
 
-function Header({ cart, setCart }: HeaderProps) {
+function Header({ cart, cartDispatch }: HeaderProps) {
   const cartTotal = cart.reduce((total, item) => {
     return total + (item.price * item.quantity);
   }, 0)
@@ -17,7 +17,7 @@ function Header({ cart, setCart }: HeaderProps) {
       try {
         const checkoutComplete = await checkout();
         if (checkoutComplete) {
-          setCart([]);
+          cartDispatch(CartActions.Checkout());
         } else {
           throw new Error("Error: could not checkout, operation failed - status code not 200");
         }

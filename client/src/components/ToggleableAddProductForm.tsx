@@ -1,12 +1,12 @@
 import React from "react";
 import AddProductForm from "./AddProductForm";
-import { Product } from "../types";
+import { ProductReducerArg } from "../productsReducer";
 
 interface ToggleableAddProductFormProps {
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>
+  productsDispatch: React.ActionDispatch<[arg: ProductReducerArg]>;
 }
 
-function ToggleableAddProductForm({ setProducts }: ToggleableAddProductFormProps) {
+function ToggleableAddProductForm({ productsDispatch }: ToggleableAddProductFormProps) {
   const [addProductShown, setAddProductShown] = React.useState<boolean>(false);
   
   const handleShowAddProductForm = () => {
@@ -24,7 +24,7 @@ function ToggleableAddProductForm({ setProducts }: ToggleableAddProductFormProps
   return (
     <AddProductForm
       onShowAddProduct={handleShowAddProductForm}
-      setProducts={setProducts}
+      productsDispatch={productsDispatch}
     />
   );
 }

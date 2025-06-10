@@ -1,19 +1,20 @@
 import { updateProduct } from "../services/api";
 import { Product } from "../types/index";
 import React from "react";
+import { ProductReducerAction, ProductActions } from "../reducers/productsReducer";
 
 interface EditProductFormProps {
   products: Product[];
   productId: string;
   onToggleEditProductForm: (status: boolean) => void;
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  productsDispatch: React.ActionDispatch<[action: ProductReducerAction]>;
 }
 
 function EditProductForm({
   products,
   productId,
   onToggleEditProductForm,
-  setProducts
+  productsDispatch
 }: EditProductFormProps) {
   const product = products.find(product => product._id === productId) as Product;
   const [formValues, setFormValues] = React.useState<Product>(product);
@@ -30,7 +31,7 @@ function EditProductForm({
       try {
         const newValues = {...product, ...formValues};
         const newProduct = await updateProduct(newValues);
-        setProducts(products.map(product => product._id !== productId ? product : newProduct));
+        productsDispatch(ProductActions.UpdateProduct(newProduct));
         onToggleEditProductForm(false);
       } catch (e) {
         console.log(e);

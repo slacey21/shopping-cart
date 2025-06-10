@@ -5,21 +5,21 @@ import {
 import { useState } from "react";
 import EditProductForm from "./EditProductForm.tsx";
 import { deleteProduct, addToCart } from "../services/api.ts";
+import { ProductReducerAction, ProductActions } from "../reducers/productsReducer.ts";
+import { CartReducerAction, CartActions } from "../reducers/cartReducer.ts";
 
 interface ProductProps {
   product: ProductType;
   products: ProductType[];
-  cart: CartItemType[];
-  setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
-  setCart: React.Dispatch<React.SetStateAction<CartItemType[]>>;
+  productsDispatch: React.ActionDispatch<[action: ProductReducerAction]>;
+  cartDispatch: React.ActionDispatch<[action: CartReducerAction]>;
 }
 
 function Product({
   product,
   products,
-  cart,
-  setProducts,
-  setCart
+  productsDispatch,
+  cartDispatch
 }: ProductProps) {
   const [isEditProductForm, setIsEditProductForm] = useState(false);
   
@@ -32,7 +32,10 @@ function Product({
       try {
         const deleted = await deleteProduct(product._id);
         if (deleted) {
-          setProducts(products.filter(p => p._id !== product._id));
+          productsDispatch({
+            type: "DELETE_PRODUCT",
+            payload: product,
+          })
         } else {
           throw new Error("Error: Product could not be deleted, operation did not return 200 response status");
         }
@@ -43,36 +46,17 @@ function Product({
   }
 
   const handleUpdateProducts = (updatedProduct: ProductType): void => {
-    const newProducts = products.map(product => {
-      if (product._id === updatedProduct._id) {
-        return updatedProduct;
-      }
-      return product;
-    });
-    setProducts(newProducts);
+    productsDispatch(ProductActions.UpdateProduct(updatedProduct));
   };
 
   const handleUpdateCart = (updatedCartItem: CartItemType): void => {
-    const existingCartItem = cart.find(cartItem => cartItem._id == updatedCartItem._id);
-    if (existingCartItem) {
-      const newCartItems = cart.map(cartItem => {
-        if (cartItem._id === existingCartItem._id) {
-          return updatedCartItem;
-        }
-        return cartItem;
-      });
-      setCart(newCartItems);
-    } else {
-      setCart(cart.concat(updatedCartItem));
-    }
+    cartDispatch(CartActions.AddItem(updatedCartItem));
   };
 
   const handleAddToCart = () => {
     (async () => {
       try {
-        const response = await addToCart(product._id) ;
-        const updatedProduct = response.product;
-        const updatedCartItem = response.item;
+        const { product: updatedProduct, item: updatedCartItem } = await addToCart(product._id);
         handleUpdateProducts(updatedProduct);
         handleUpdateCart(updatedCartItem);
       } catch (e: unknown) {
@@ -112,7 +96,7 @@ function Product({
           products={products}
           productId={product._id}
           onToggleEditProductForm={handleToggleEditProductForm}
-          setProducts={setProducts}
+          productsDispatch={productsDispatch}
         />
       }
     </li>
