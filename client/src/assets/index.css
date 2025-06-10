@@ -103,6 +103,7 @@ button {
   font-family: sans-serif;
   cursor: pointer;
   display: inline-block;
+  margin: 2px;
 }
 
 .checkout {
@@ -199,4 +200,26 @@ th {
 table td.total {
   text-align: right;
   padding-top: 20px;
+}
+
+.product-listing-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* optional, based on your layout */
+}
+
+.sort-options {
+  display: flex;
+  align-items: center;
+}
+
+.active {
+  background-color: #07575b;
+  color: #fff;
+}
+.inactive {
+  background-color: #c4dfe6;
+  border-color: #07575b;
+  border-width: 1px;
+  color: #07575b;
 }

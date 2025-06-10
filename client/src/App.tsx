@@ -3,11 +3,15 @@ import Header from "./components/Header.tsx";
 import ToggleableAddProductForm from "./components/ToggleableAddProductForm.tsx"
 import ProductListing from "./components/ProductListing.tsx";
 import { getProducts, getCart } from "./services/api.ts";
-import { productReducer, ProductActions } from "./reducers/productsReducer.ts";
+import { productReducer, ProductActions, ProductState } from "./reducers/productsReducer.ts";
 import { cartReducer, CartActions } from "./reducers/cartReducer.ts";
 
 function App() {
-  const [products, productsDispatch] = React.useReducer(productReducer, []);
+  const initialProductState: ProductState = {
+    items: [],
+    sortKey: "title"
+  };
+  const [products, productsDispatch] = React.useReducer(productReducer, initialProductState);
   const [cart, cartDispatch] = React.useReducer(cartReducer, []);
 
   React.useEffect(() => {
