@@ -7,6 +7,8 @@ import EditProductForm from "./EditProductForm.tsx";
 import { deleteProduct, addToCart } from "../services/api.ts";
 import { ProductReducerAction, ProductActions } from "../reducers/productsReducer.ts";
 import { CartReducerAction, CartActions } from "../reducers/cartReducer.ts";
+import { CurrencyContext } from "../providers/CurrencyProvider.tsx";
+import React from "react";
 
 interface ProductProps {
   product: ProductType;
@@ -22,6 +24,7 @@ function Product({
   cartDispatch
 }: ProductProps) {
   const [isEditProductForm, setIsEditProductForm] = useState(false);
+  const { currency } = React.useContext(CurrencyContext);
   
   const handleToggleEditProductForm = (status: boolean) => {
     setIsEditProductForm(status);
@@ -69,7 +72,7 @@ function Product({
     <li key={product._id} className="product">
       <div className="product-details">
         <h3>{product.title}</h3>
-        <p className="price">${product.price}</p>
+        <p className="price">{currency === "usd" ? "$" : "€"}{product.price.toFixed(2)}</p>
         <p className="quantity">{product.quantity} left in stock</p>
         <div className="actions product-actions">
           <button

@@ -2,10 +2,11 @@ import React from 'react';
 import Header from "./components/Header.tsx";
 import ToggleableAddProductForm from "./components/ToggleableAddProductForm.tsx"
 import ProductListing from "./components/ProductListing.tsx";
-import { getProducts, getCart } from "./services/api.ts";
+import { getProducts, getCart, getCurrencyConversionRate } from "./services/api.ts";
 import { productReducer, ProductActions, ProductState } from "./reducers/productsReducer.ts";
 import { cartReducer, CartActions } from "./reducers/cartReducer.ts";
 import { ThemeContext, ThemeContextType } from './providers/ThemeProvider.tsx';
+import { CurrencyContext } from './providers/CurrencyProvider.tsx';
 
 function App() {
   const initialProductState: ProductState = {
@@ -15,7 +16,7 @@ function App() {
   const [products, productsDispatch] = React.useReducer(productReducer, initialProductState);
   const [cart, cartDispatch] = React.useReducer(cartReducer, []);
   const { theme } = React.useContext<ThemeContextType>(ThemeContext);
-  console.log(theme);
+  const { currency } = React.useContext(CurrencyContext);
   
   React.useEffect(() => {
     const fetchProducts = async () => {
@@ -32,6 +33,15 @@ function App() {
     }
     fetchCart();
   }, []);
+
+  React.useEffect(() => {
+    const updateProductPrices = async () => {
+      const conversionRate = await getCurrencyConversionRate(currency);
+      productsDispatch(ProductActions.UpdateProductPrices({ conversionRate }));
+      cartDispatch(CartActions.UpdateItemPrices({ conversionRate }))
+    }
+    updateProductPrices();
+  }, [currency])
   
   return (
     <div id="app" className={theme === "dark" ? "dark" : ""}>

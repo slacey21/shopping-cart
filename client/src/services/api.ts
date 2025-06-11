@@ -93,3 +93,17 @@ export const addToCart = async (productId: string): Promise<UpdateCartResponse> 
     throw e;
   }
 };
+
+export const getCurrencyConversionRate = async (currency: "usd" | "eur"): Promise<number> => {
+  let conversionRate: number;
+  
+  if (currency === "usd") { // all prices currently in EUR, convert to USD
+    const { data } = await axios.get("https://open.er-api.com/v6/latest/EUR");
+    conversionRate = data.rates.USD;
+  } else { // all prices currently in USD, convert to EUR
+    const { data } = await axios.get("https://open.er-api.com/v6/latest/USD");
+    conversionRate = data.rates.EUR;
+  }
+
+  return conversionRate;
+}

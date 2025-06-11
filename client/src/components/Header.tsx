@@ -1,6 +1,8 @@
 import CartItem from "./CartItem";
 import { checkout } from "../services/api";
 import { CartReducerAction, CartActions } from "../reducers/cartReducer";
+import React from "react";
+import { CurrencyContext } from "../providers/CurrencyProvider";
 
 interface HeaderProps {
   cart: CartItem[];
@@ -10,7 +12,10 @@ interface HeaderProps {
 function Header({ cart, cartDispatch }: HeaderProps) {
   const cartTotal = cart.reduce((total, item) => {
     return total + (item.price * item.quantity);
-  }, 0)
+  }, 0);
+
+  const { currency } = React.useContext(CurrencyContext);
+  const currencySymbol = currency === "usd" ? "$" : '€';
 
   const handleCheckout = () => {
     (async () => {
@@ -34,7 +39,7 @@ function Header({ cart, cartDispatch }: HeaderProps) {
         <div className="cart">
           <h2>Your Cart</h2>
           <p>Your cart is empty</p>
-          <p>Total: $0</p>
+          <p>Total: {currencySymbol}0</p>
           <button className="checkout" disabled>Checkout</button>
         </div>
       </header>  
@@ -62,7 +67,7 @@ function Header({ cart, cartDispatch }: HeaderProps) {
           <tfoot>
             <tr>
               <td colSpan={3} className="total">
-                ${cartTotal.toFixed(2)}
+                {currencySymbol}{cartTotal.toFixed(2)}
               </td>
             </tr>
           </tfoot>

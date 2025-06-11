@@ -27,12 +27,18 @@ interface SortProductsAction {
   payload: { sortKey: sortKey };
 }
 
+interface UpdateProductPricesAction {
+  type: "UPDATE_PRICES";
+  payload: {conversionRate: number};
+}
+
 export type ProductReducerAction = 
   | AddProductAction
   | UpdateProductAction
   | DeleteProductAction
   | SetProductsAction
-  | SortProductsAction;
+  | SortProductsAction
+  | UpdateProductPricesAction;
 
 export interface ProductState {
   items: Product[];
@@ -58,6 +64,10 @@ export const ProductActions = {
   }),
   SortProducts: (payload: { sortKey: "title" | "price" | "quantity" }): SortProductsAction => ({
     type: "SORT_PRODUCTS",
+    payload
+  }),
+  UpdateProductPrices: (payload: { conversionRate: number }): UpdateProductPricesAction => ({
+    type: "UPDATE_PRICES",
     payload
   }),
 };
@@ -125,6 +135,17 @@ export function productReducer(
         sortKey: payload.sortKey
       }
       
+    case "UPDATE_PRICES": {
+      const updatedItems = prev.items.map(item => {
+        return {...item, price: item.price * payload.conversionRate}
+      });
+      
+      return {
+        items: updatedItems,
+        sortKey: prev.sortKey,
+      }
+    }
+    
     default:
       throw new Error(`Incorrect 'type' field in object passed to dispatch function: ${type}`);
   }

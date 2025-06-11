@@ -8,6 +8,7 @@ import {
  } from "../reducers/productsReducer.ts";
 import { CartReducerAction } from "../reducers/cartReducer.ts";
 import { ThemeContext, ThemeContextType } from "../providers/ThemeProvider.tsx";
+import { CurrencyContext, CurrencyContextType } from "../providers/CurrencyProvider.tsx";
 
 interface ProductListingProps {
   products: ProductState;
@@ -21,12 +22,16 @@ function ProductListing({
   cartDispatch
 }: ProductListingProps) {
   const { theme, toggleTheme } = React.useContext<ThemeContextType>(ThemeContext);
+  const { currency, toggleCurrency } = React.useContext<CurrencyContextType>(CurrencyContext);
 
   return (
     <div className="product-listing">
       <div className="product-listing-header">
         <h2>Products</h2>
         <div className="sort-options">
+          <button onClick={toggleCurrency} className={currency}>
+            {currency === "usd" ? "$" : "€"}
+          </button>
           <button onClick={toggleTheme} className={theme}>
             {theme === "light" ? "🌚" : "🌝"}
           </button>
