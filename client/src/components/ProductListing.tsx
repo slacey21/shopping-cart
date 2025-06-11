@@ -7,6 +7,7 @@ import {
   ProductState
  } from "../reducers/productsReducer.ts";
 import { CartReducerAction } from "../reducers/cartReducer.ts";
+import { ThemeContext, ThemeContextType } from "../providers/ThemeProvider.tsx";
 
 interface ProductListingProps {
   products: ProductState;
@@ -19,11 +20,16 @@ function ProductListing({
   productsDispatch,
   cartDispatch
 }: ProductListingProps) {
+  const { theme, toggleTheme } = React.useContext<ThemeContextType>(ThemeContext);
+
   return (
     <div className="product-listing">
       <div className="product-listing-header">
         <h2>Products</h2>
         <div className="sort-options">
+          <button onClick={toggleTheme} className={theme}>
+            {theme === "light" ? "🌚" : "🌝"}
+          </button>
           <p>Sort:</p>
           <button
             className={products.sortKey === "title" ? "active" : "inactive"}

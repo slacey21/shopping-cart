@@ -5,6 +5,7 @@ import ProductListing from "./components/ProductListing.tsx";
 import { getProducts, getCart } from "./services/api.ts";
 import { productReducer, ProductActions, ProductState } from "./reducers/productsReducer.ts";
 import { cartReducer, CartActions } from "./reducers/cartReducer.ts";
+import { ThemeContext, ThemeContextType } from './providers/ThemeProvider.tsx';
 
 function App() {
   const initialProductState: ProductState = {
@@ -13,7 +14,9 @@ function App() {
   };
   const [products, productsDispatch] = React.useReducer(productReducer, initialProductState);
   const [cart, cartDispatch] = React.useReducer(cartReducer, []);
-
+  const { theme } = React.useContext<ThemeContextType>(ThemeContext);
+  console.log(theme);
+  
   React.useEffect(() => {
     const fetchProducts = async () => {
       const fetchedProducts = await getProducts();
@@ -31,7 +34,7 @@ function App() {
   }, []);
   
   return (
-    <div id="app">
+    <div id="app" className={theme === "dark" ? "dark" : ""}>
       <Header cart={cart} cartDispatch={cartDispatch}/>
       <main>
         <ProductListing
